@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AppNotes</string>
+    <string name="New">New</string>
+    <string name="accept">Accept</string>
+    <string name="grid">Grid</string>
+    <string name="camera">Camera</string>
+    <string name="picture">Picture</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+</resources>
