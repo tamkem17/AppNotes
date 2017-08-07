@@ -2,6 +2,7 @@ package com.example.tam.appnotes.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
         LoadListNote();
         mGrvNotes.setOnItemClickListener(new SeeDetailNote());
     }
@@ -36,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            startActivity(new Intent(MainActivity.this, DetailNoteActivity.class));
+            Intent intent = new Intent(MainActivity.this, DetailNoteActivity.class );
+            intent.putExtra("idNote", mArrayNote.get(i).getIdNote());
+            startActivity(intent);
         }
     }
 
@@ -47,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursorNote = mDatabase.GetNote("select * from Notes");
         while (cursorNote.moveToNext()) {
             mArrayNote.add(new Note(
+                    cursorNote.getInt(0),
                     cursorNote.getString(1),
                     cursorNote.getString(2),
-                    cursorNote.getString(3)
+                    cursorNote.getString(3),
+                    cursorNote.getString(4),
+                    cursorNote.getInt(5),
+                    cursorNote.getBlob(6)
             ));
         }
         mAdapterNote = new CustomAdapterNote(this, R.layout.list_item_note, mArrayNote);

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.tam.appnotes.R;
@@ -49,6 +50,7 @@ public class CustomAdapterNote extends BaseAdapter {
 
     private class ViewHolde{
         TextView title, note, dateCurrent;
+        LinearLayout linearLayout;
     }
 
     @Override
@@ -61,6 +63,7 @@ public class CustomAdapterNote extends BaseAdapter {
             holde.title =(TextView)row.findViewById(R.id.item_title);
             holde.note=(TextView) row.findViewById(R.id.item_Note);
             holde.dateCurrent = (TextView)row.findViewById(R.id.item_dateCurrent);
+            holde.linearLayout = (LinearLayout)row.findViewById(R.id.item_layout);
             //holde.imageOclock = (ImageView)row.findViewById(R.id.item_timerOclock);
             row.setTag(holde);
         }else {
@@ -70,6 +73,7 @@ public class CustomAdapterNote extends BaseAdapter {
         holde.title.setText(note.title);
         holde.note.setText(note.note);
         holde.dateCurrent.setText(note.getDateCurrent());
+        holde.linearLayout.setBackgroundColor(note.color);
         return row;
     }
 }

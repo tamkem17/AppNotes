@@ -62,6 +62,13 @@
             android:id="@+id/spn_Time"
             android:layout_marginLeft="25dp"
             android:visibility="gone"></Spinner>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_cancel"
+            android:visibility="gone"
+            android:id="@+id/imbt_Cancel"/>
     </LinearLayout>
 
 

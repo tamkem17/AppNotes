@@ -10,10 +10,28 @@ public class Note {
     public String note;
     public String timer;
     public String dateCurrent;
+    public int color;
     public byte[] image;
 
-    public Note(int idNote, String title, String note, String timer, String dateCurrent, byte[] image) {
+    public Note(int idNote, String title, String note, String timer, String dateCurrent, int color, byte[] image) {
         this.idNote = idNote;
+        this.title = title;
+        this.note = note;
+        this.timer = timer;
+        this.dateCurrent = dateCurrent;
+        this.color = color;
+        this.image = image;
+    }
+
+    public Note(String title, String note, String timer, String dateCurrent, int color, byte[] image) {
+        this.title = title;
+        this.note = note;
+        this.timer = timer;
+        this.dateCurrent = dateCurrent;
+        this.color = color;
+        this.image = image;
+    }
+    public Note(String title, String note, String timer, String dateCurrent, byte[] image) {
         this.title = title;
         this.note = note;
         this.timer = timer;
@@ -21,10 +39,11 @@ public class Note {
         this.image = image;
     }
 
-    public Note(String title, String note, String dateCurrent) {
+    public Note(String title, String note, String dateCurrent, int color) {
         this.title = title;
         this.note = note;
         this.dateCurrent = dateCurrent;
+        this.color = color;
     }
 
     public int getIdNote() {
@@ -65,6 +84,14 @@ public class Note {
 
     public void setDateCurrent(String dateCurrent) {
         this.dateCurrent = dateCurrent;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public byte[] getImage() {

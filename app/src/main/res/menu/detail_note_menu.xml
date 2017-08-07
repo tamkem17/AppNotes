@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_detail_camera"
+        android:title=""
+        android:icon="@drawable/ic_action_camera"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/item_detail_grid"
+        android:title=""
+        android:icon="@drawable/ic_action_view_as_grid"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/item_deyail_accept"
+        android:title=""
+        android:icon="@drawable/ic_action_accept"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/item_detail_New"
+        android:title="New Note"
+        app:showAsAction="never">
+    </item>
+</menu>
