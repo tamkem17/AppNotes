@@ -1,7 +1,10 @@
 package com.example.tam.appnotes.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +17,11 @@ import android.widget.ListView;
 
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
+import com.example.tam.appnotes.presenter.AlarmReceiver;
 import com.example.tam.appnotes.presenter.CustomAdapterNote;
 import com.example.tam.appnotes.presenter.Database_Note;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,14 +29,17 @@ public class MainActivity extends AppCompatActivity {
     private CustomAdapterNote mAdapterNote = null;
     private ArrayList<Note> mArrayNote;
     private Database_Note mDatabase;
+    private PendingIntent mPendingIntent;
+    private AlarmManager mAlarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
-        LoadListNote();
+        //LoadListNote();
         mGrvNotes.setOnItemClickListener(new SeeDetailNote());
     }
 
@@ -40,12 +48,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent(MainActivity.this, DetailNoteActivity.class );
-            intent.putExtra("idNote", mArrayNote.get(i).getIdNote());
+            Bundle bundle = new Bundle();
+            //intent.putExtra("idNote", mArrayNote.get(i).getIdNote());
+            //intent.putExtra("position", i);
+            //intent.putExtra("listNote", mArrayNote);
+            bundle.putSerializable("listNote", mArrayNote);
+            bundle.putInt("idNote", mArrayNote.get(i).getIdNote());
+            intent.putExtra("aa", bundle);
             startActivity(intent);
         }
     }
 
-    public void LoadListNote() {
+   /* public void LoadListNote() {
         mGrvNotes = (GridView) findViewById(R.id.grv_ListNotes);
         mDatabase = new Database_Note(getApplicationContext());
         mArrayNote = new ArrayList<Note>();
@@ -57,13 +71,15 @@ public class MainActivity extends AppCompatActivity {
                     cursorNote.getString(2),
                     cursorNote.getString(3),
                     cursorNote.getString(4),
-                    cursorNote.getInt(5),
-                    cursorNote.getBlob(6)
+                    cursorNote.getString(5),
+                    cursorNote.getInt(6),
+                    cursorNote.getBlob(7)
             ));
         }
         mAdapterNote = new CustomAdapterNote(this, R.layout.list_item_note, mArrayNote);
         mGrvNotes.setAdapter(mAdapterNote);
-    }
+    }*/
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -51,6 +51,7 @@ public class CustomAdapterNote extends BaseAdapter {
     private class ViewHolde{
         TextView title, note, dateCurrent;
         LinearLayout linearLayout;
+        ImageView imageNote;
     }
 
     @Override
@@ -64,6 +65,7 @@ public class CustomAdapterNote extends BaseAdapter {
             holde.note=(TextView) row.findViewById(R.id.item_Note);
             holde.dateCurrent = (TextView)row.findViewById(R.id.item_dateCurrent);
             holde.linearLayout = (LinearLayout)row.findViewById(R.id.item_layout);
+            holde.imageNote = (ImageView)row.findViewById(R.id.item_image);
             //holde.imageOclock = (ImageView)row.findViewById(R.id.item_timerOclock);
             row.setTag(holde);
         }else {
@@ -74,6 +76,10 @@ public class CustomAdapterNote extends BaseAdapter {
         holde.note.setText(note.note);
         holde.dateCurrent.setText(note.getDateCurrent());
         holde.linearLayout.setBackgroundColor(note.color);
+        if(note.timer == null) {
+            holde.imageNote.setVisibility(View.GONE);
+        }
+        else holde.imageNote.setVisibility(View.VISIBLE);
         return row;
     }
 }

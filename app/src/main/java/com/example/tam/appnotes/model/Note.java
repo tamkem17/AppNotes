@@ -1,47 +1,31 @@
 package com.example.tam.appnotes.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by tam on 8/3/2017.
  */
 
-public class Note {
+public class Note implements Serializable{
     public int idNote;
+    public int idPicture;
     public String title;
     public String note;
+    public String date;
     public String timer;
     public String dateCurrent;
     public int color;
-    public byte[] image;
 
-    public Note(int idNote, String title, String note, String timer, String dateCurrent, int color, byte[] image) {
+    public Note(int idNote, int idPicture, String title, String note, String date, String timer, String dateCurrent, int color) {
         this.idNote = idNote;
+        this.idPicture = idPicture;
         this.title = title;
         this.note = note;
+        this.date = date;
         this.timer = timer;
-        this.dateCurrent = dateCurrent;
-        this.color = color;
-        this.image = image;
-    }
-
-    public Note(String title, String note, String timer, String dateCurrent, int color, byte[] image) {
-        this.title = title;
-        this.note = note;
-        this.timer = timer;
-        this.dateCurrent = dateCurrent;
-        this.color = color;
-        this.image = image;
-    }
-    public Note(String title, String note, String timer, String dateCurrent, byte[] image) {
-        this.title = title;
-        this.note = note;
-        this.timer = timer;
-        this.dateCurrent = dateCurrent;
-        this.image = image;
-    }
-
-    public Note(String title, String note, String dateCurrent, int color) {
-        this.title = title;
-        this.note = note;
         this.dateCurrent = dateCurrent;
         this.color = color;
     }
@@ -52,6 +36,14 @@ public class Note {
 
     public void setIdNote(int idNote) {
         this.idNote = idNote;
+    }
+
+    public int getIdPicture() {
+        return idPicture;
+    }
+
+    public void setIdPicture(int idPicture) {
+        this.idPicture = idPicture;
     }
 
     public String getTitle() {
@@ -68,6 +60,14 @@ public class Note {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTimer() {
@@ -92,13 +92,5 @@ public class Note {
 
     public void setColor(int color) {
         this.color = color;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }

@@ -24,9 +24,12 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Camera;
+import com.example.tam.appnotes.ui.DetailNoteActivity;
+import com.example.tam.appnotes.ui.NewNoteActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -115,8 +118,8 @@ public abstract class CustomDialog extends AppCompatActivity  {
         mSpnTime.setAdapter(mAdapterTime);
     }
 
-    public void datePickerDialog(Activity activity) {
-        DatePickerDialog datePicker = new DatePickerDialog(activity,
+    public void datePickerDialog() {
+        DatePickerDialog datePicker = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -131,8 +134,8 @@ public abstract class CustomDialog extends AppCompatActivity  {
         datePicker.show();
     }
 
-    public void timePickerDialog(Activity activity) {
-        TimePickerDialog timePicker = new TimePickerDialog(activity,
+    public void timePickerDialog() {
+        TimePickerDialog timePicker = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -204,6 +207,55 @@ public abstract class CustomDialog extends AppCompatActivity  {
                 default:
                     break;
             }
+        }
+    }
+
+    public class ItemSelectedDate implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            SimpleDateFormat sdfomat = null;
+            String strDateFormat = "dd/MM/yyyy";
+            sdfomat = new SimpleDateFormat(strDateFormat);
+            if(parent.getSelectedItemPosition() == 0) {
+                mDate = mTxtCurrentDate.getText().toString().substring(0, 10);
+            }
+            if(parent.getSelectedItemPosition() == 1) {
+                mCalendar.add(Calendar.DAY_OF_YEAR, 1);
+                mDate = sdfomat.format(mCalendar.getTime());
+                mCalendar = Calendar.getInstance();
+            }
+            if(parent.getSelectedItemPosition() == 2) {
+                int weekday = mCalendar.get(Calendar.DAY_OF_WEEK);
+                if (weekday!=Calendar.THURSDAY){
+                    int days = (Calendar.SATURDAY - weekday + 5) % 7;
+                    mCalendar.add(Calendar.DAY_OF_YEAR, days);
+                    mDate = sdfomat.format(mCalendar.getTime());
+                    mCalendar = Calendar.getInstance();
+                }
+            }
+            if(parent.getSelectedItemPosition() == 3) {
+                datePickerDialog();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    }
+
+    public class ItemSelectedTime implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getSelectedItemPosition() == 4) {
+                timePickerDialog();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
     public byte[] ImageviewToBye(ImageView image) {

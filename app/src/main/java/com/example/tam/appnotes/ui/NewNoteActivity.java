@@ -76,62 +76,7 @@ public class NewNoteActivity extends CustomDialog{
         }
     }
 
-    public class ItemSelectedDate implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            SimpleDateFormat sdfomat = null;
-            String strDateFormat = "dd/MM/yyyy";
-            sdfomat = new SimpleDateFormat(strDateFormat);
-            if(parent.getSelectedItemPosition() == 0) {
-                mDate = mTxtCurrentDate.getText().toString().substring(0, 10);
-                Toast.makeText(getApplicationContext(), mDate, Toast.LENGTH_LONG).show();
-            }
-            if(parent.getSelectedItemPosition() == 1) {
-                mCalendar.add(Calendar.DAY_OF_YEAR, 1);
-                mDate = sdfomat.format(mCalendar.getTime());
-                Toast.makeText(getApplicationContext(), mDate, Toast.LENGTH_LONG).show();
-                mCalendar = Calendar.getInstance();
-
-            }
-            if(parent.getSelectedItemPosition() == 2) {
-                int weekday = mCalendar.get(Calendar.DAY_OF_WEEK);
-                if (weekday!=Calendar.THURSDAY){
-                    int days = (Calendar.SATURDAY - weekday + 5) % 7;
-                    mCalendar.add(Calendar.DAY_OF_YEAR, days);
-                    mDate = sdfomat.format(mCalendar.getTime());
-                    Toast.makeText(getApplicationContext(), mDate, Toast.LENGTH_LONG).show();
-                    mCalendar = Calendar.getInstance();
-                }
-
-            }
-            if(parent.getSelectedItemPosition() == 3) {
-                datePickerDialog(NewNoteActivity.this);
-                Toast.makeText(getApplicationContext(), mDate, Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-    public class ItemSelectedTime implements AdapterView.OnItemSelectedListener {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (parent.getSelectedItemPosition() == 4) {
-                timePickerDialog(NewNoteActivity.this);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-     public void insertNote() {
+    /* public void insertNote() {
          try {
              mImgNewImage = (ImageView)findViewById(R.id.img_newImage);
              String newColor = String.valueOf(mNewColor);
@@ -140,6 +85,7 @@ public class NewNoteActivity extends CustomDialog{
                      mEdtTitle.getText().toString(),
                      mEdtNote.getText().toString(),
                      mDate.toString(),
+                     mTime.toString(),
                      mTxtCurrentDate.getText().toString(),
                      mNewColor,
                      ImageviewToBye(mImgNewImage)
@@ -149,6 +95,7 @@ public class NewNoteActivity extends CustomDialog{
                          mEdtTitle.getText().toString(),
                          mEdtNote.getText().toString(),
                          mDate.toString(),
+                         mTime.toString(),
                          mTxtCurrentDate.getText().toString(),
                          -258,
                          ImageviewToBye(mImgNewImage)));
@@ -159,7 +106,7 @@ public class NewNoteActivity extends CustomDialog{
 
          }
 
-   }
+   }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,17 +121,14 @@ public class NewNoteActivity extends CustomDialog{
                 startActivity(new Intent(NewNoteActivity.this, MainActivity.class));
                 finish();
                 break;
-            case R.id.item_accept: {
-                insertNote();
-            }
+            case R.id.item_accept:
+                //insertNote();
             break;
-            case R.id.item_grid: {
+            case R.id.item_grid:
                 gridDialog(NewNoteActivity.this);
-            }
             break;
-            case R.id.item_camera: {
+            case R.id.item_camera:
                 cameraDialog(NewNoteActivity.this);
-            }
             break;
             default:
                 break;
