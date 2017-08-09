@@ -1,6 +1,7 @@
 package com.example.tam.appnotes.presenter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,6 @@ public class CustomAdapterNote extends BaseAdapter {
             holde.dateCurrent = (TextView)row.findViewById(R.id.item_dateCurrent);
             holde.linearLayout = (LinearLayout)row.findViewById(R.id.item_layout);
             holde.imageNote = (ImageView)row.findViewById(R.id.item_image);
-            //holde.imageOclock = (ImageView)row.findViewById(R.id.item_timerOclock);
             row.setTag(holde);
         }else {
             holde = (ViewHolde)row.getTag();
@@ -75,11 +75,17 @@ public class CustomAdapterNote extends BaseAdapter {
         holde.title.setText(note.title);
         holde.note.setText(note.note);
         holde.dateCurrent.setText(note.getDateCurrent());
-        holde.linearLayout.setBackgroundColor(note.color);
-        if(note.timer == null) {
-            holde.imageNote.setVisibility(View.GONE);
+        if(note.color == 0) {
+            holde.linearLayout.setBackgroundColor(Color.WHITE);
+        }else {
+            holde.linearLayout.setBackgroundColor(note.color);
         }
-        else holde.imageNote.setVisibility(View.VISIBLE);
+        if(note.date.equals("")) {
+            holde.imageNote.setVisibility(View.GONE);
+        }else  {
+            holde.imageNote.setVisibility(View.VISIBLE);
+
+        }
         return row;
     }
 }

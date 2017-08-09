@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +19,6 @@ import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.CustomDialog;
 import com.example.tam.appnotes.presenter.Database_Note;
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class NewNoteActivity extends CustomDialog{
     private TextView mTxtAlarm;
@@ -76,37 +72,18 @@ public class NewNoteActivity extends CustomDialog{
         }
     }
 
-    /* public void insertNote() {
-         try {
-             mImgNewImage = (ImageView)findViewById(R.id.img_newImage);
-             String newColor = String.valueOf(mNewColor);
-             if(newColor != null){
-             mDatabase.inSertNote(new Note(
-                     mEdtTitle.getText().toString(),
-                     mEdtNote.getText().toString(),
-                     mDate.toString(),
-                     mTime.toString(),
-                     mTxtCurrentDate.getText().toString(),
-                     mNewColor,
-                     ImageviewToBye(mImgNewImage)
-             ));}
-             else {
-                 mDatabase.inSertNote(new Note(
-                         mEdtTitle.getText().toString(),
-                         mEdtNote.getText().toString(),
-                         mDate.toString(),
-                         mTime.toString(),
-                         mTxtCurrentDate.getText().toString(),
-                         -258,
-                         ImageviewToBye(mImgNewImage)));
-             }
-             Toast.makeText(getApplicationContext(), "Save successful", Toast.LENGTH_LONG).show();
-         }catch (Exception e){
-             Toast.makeText(getApplicationContext(), "Save erro", Toast.LENGTH_LONG).show();
+    public void insertNote() {
+        mDatabase.inSertNote(new Note(
+                mEdtTitle.getText().toString(),
+                mEdtNote.getText().toString(),
+                mDate.toString(),
+                mTime.toString(),
+                mTxtCurrentDate.getText().toString(),
+                mNewColor,
+                mPicturePath.toString()
+        ));
 
-         }
-
-   }*/
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,7 +99,11 @@ public class NewNoteActivity extends CustomDialog{
                 finish();
                 break;
             case R.id.item_accept:
-                //insertNote();
+                insertNote();
+
+                //insertPicture();
+                startActivity(new Intent(NewNoteActivity.this, MainActivity.class));
+                finish();
             break;
             case R.id.item_grid:
                 gridDialog(NewNoteActivity.this);

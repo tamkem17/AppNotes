@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.tam.appnotes.model.Note;
-import com.example.tam.appnotes.model.Picture;
 
 /**
  * Created by tam on 8/3/2017.
@@ -24,26 +23,18 @@ public class Database_Note extends SQLiteOpenHelper {
     static final String COLUMN_TIME = "time";
     static final String COLUMN_TIME_CURRENT = "time_current";
     static final String COLUMN_COLOR = "color";
-
-    static final String PICTURE_TABLE = "Picture";
-    static final String COLUMN_ID_PICTURE = "id_picture";
-    static final String COLUMN_LINK_PICTURE = "link";
+    static final String COLUMN_PICTURE = "picture";
 
     String NOTES_TABLE_CREATE = "CREATE TABLE "
             + NOTES_TABLE + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_ID_PICTURE + " INTERGER,"
             + COLUMN_TITLE + " TEXT,"
             + COLUMN_NOTE + " TEXT,"
             + COLUMN_DATE + " TEXT,"
             + COLUMN_TIME + " TEXT,"
             + COLUMN_TIME_CURRENT + " TEXT,"
             + COLUMN_COLOR + " INT,"
-            + ")";
-    String PICTURE_TABLE_CREAT = "CREATE TABLE"
-            + PICTURE_TABLE + "("
-            + COLUMN_ID_PICTURE + " INT,"
-            + COLUMN_LINK_PICTURE + " TEXT,"
+            + COLUMN_PICTURE + " TEXT"
             + ")";
 
     public Database_Note(Context context) {
@@ -53,36 +44,25 @@ public class Database_Note extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(NOTES_TABLE_CREATE);
-        db.execSQL(PICTURE_TABLE_CREAT);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXIST "+ NOTES_TABLE);
-        db.execSQL("DROP TABLE IF EXITS "+ PICTURE_TABLE);
         onCreate(db);
     }
 
    public void inSertNote(Note note){
        SQLiteDatabase database = this.getWritableDatabase();
        ContentValues values = new ContentValues();
-       values.put(COLUMN_ID_PICTURE, note.idPicture);
        values.put(COLUMN_TITLE, note.title);
        values.put(COLUMN_NOTE, note.note);
        values.put(COLUMN_TIME_CURRENT, note.dateCurrent);
        values.put(COLUMN_DATE, note.date);
        values.put(COLUMN_TIME, note.timer);
        values.put(COLUMN_COLOR, note.color);
+       values.put(COLUMN_PICTURE, note.picture);
        database.insert(NOTES_TABLE, null, values);
-       database.close();
-   }
-
-   public void insertPicture(Picture picture) {
-       SQLiteDatabase database = this.getWritableDatabase();
-       ContentValues values = new ContentValues();
-       values.put(COLUMN_ID_PICTURE, picture.idPicture);
-       values.put(COLUMN_LINK_PICTURE, picture.linkImage);
-       database.insert(PICTURE_TABLE, null, values);
        database.close();
    }
 
@@ -113,7 +93,7 @@ public class Database_Note extends SQLiteOpenHelper {
         values.put(COLUMN_DATE, note.date);
         values.put(COLUMN_TIME, note.timer);
         values.put(COLUMN_COLOR, note.color);
-       // values.put(COLUMN_IMAGE, note.image);
+        values.put(COLUMN_PICTURE, note.picture);
         database.update(NOTES_TABLE, values, COLUMN_ID + " = " + id, null);
         database.close();
     }

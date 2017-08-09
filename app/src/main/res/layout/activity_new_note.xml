@@ -9,10 +9,12 @@
     android:paddingTop="10dp"
     android:id="@+id/linearView">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/img_newImage"/>
+   <GridView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/grv_listPicture"
+       android:columnWidth="120dp"
+       android:numColumns="2"></GridView>
 
     <TextView
         android:layout_width="wrap_content"

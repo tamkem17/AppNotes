@@ -6,10 +6,20 @@ package com.example.tam.appnotes.model;
 
 public class Picture {
     public int idPicture;
+    public int idNote;
     public String linkImage;
 
-    public Picture(int idPicture, String linkImage) {
+    public Picture(int idPicture, int idNote, String linkImage) {
         this.idPicture = idPicture;
+        this.idNote = idNote;
+        this.linkImage = linkImage;
+    }
+    public Picture(int idNote, String linkImage) {
+        this.idNote = idNote;
+        this.linkImage = linkImage;
+    }
+
+    public Picture(String linkImage) {
         this.linkImage = linkImage;
     }
 

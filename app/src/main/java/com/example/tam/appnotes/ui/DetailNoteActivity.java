@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,11 +29,9 @@ import android.widget.Toast;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import java.text.SimpleDateFormat;
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
+import com.example.tam.appnotes.presenter.CustomAdapterPicture;
 import com.example.tam.appnotes.presenter.CustomDialog;
 import com.example.tam.appnotes.presenter.Database_Note;
 
@@ -47,6 +46,7 @@ public class DetailNoteActivity extends CustomDialog {
     private BottomNavigationView mBottomBar;
     private LinearLayout mLinearView;
     private ArrayList<Note> mArrayNote;
+    private int mIdNoteNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class DetailNoteActivity extends CustomDialog {
         mImbtnCancel = (ImageButton)findViewById(R.id.imbt_Cancel);
         mEdtNote = (EditText)findViewById(R.id.edt_note);
         mEdtTitle = (EditText)findViewById(R.id.edt_title);
-        mImgNote = (ImageView)findViewById(R.id.img_newImage);
+        mImgNote = (ImageView)findViewById(R.id.img_picture);
         mSpnDate = (Spinner) findViewById(R.id.spn_Date);
         mSpnTime = (Spinner) findViewById(R.id.spn_Time);
         mLinearView = (LinearLayout) findViewById(R.id.linearView);
@@ -68,12 +68,9 @@ public class DetailNoteActivity extends CustomDialog {
         mSpnDate.setOnItemSelectedListener(new ItemSelectedDate());
         mSpnTime.setOnItemSelectedListener(new ItemSelectedTime());
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("aa");
-        mIdNote = bundle.getInt("idNote");
-        mArrayNote = (ArrayList<Note>) bundle.getSerializable("listNote");
-       // mArrayNote = (ArrayList<Note>)intent.getSerializableExtra("listNote");
-       //// mIdNote = intent.getExtras().getInt("idNote");
-       // mPositionArray = intent.getExtras().getInt("position");
+        mArrayNote = (ArrayList<Note>)intent.getSerializableExtra("arrayNote");
+        mIdNote = intent.getExtras().getInt("idNote");
+        mPositionArray = intent.getExtras().getInt("position");
         mEdtTitle.addTextChangedListener(inputTextWatcher);
         mBottomBar = (BottomNavigationView) findViewById(R.id.btnvg_BottomBar);
         disableShiftMode(mBottomBar);
@@ -116,37 +113,58 @@ public class DetailNoteActivity extends CustomDialog {
     }
 
     public void getNoteId(){
+        mGrvPicture = (GridView)findViewById(R.id.grv_listPicture);
+        mArrayPicture = new ArrayList<Note>();
         Cursor cursor = mDatabase.getNoteId(mIdNote);
         while (cursor.moveToNext()) {
             mEdtTitle.setText(cursor.getString(1));
             mEdtNote.setText(cursor.getString(2));
-            byte[] imageByte = cursor.getBlob(7);
-            ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByte);
-            Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-            mImgNote.setImageBitmap(imageBitmap);
-            mLinearView.setBackgroundColor(cursor.getInt(5));
-            if(cursor.getString(3) != null) {
+            mLinearView.setBackgroundColor(cursor.getInt(6));
+            String listPicturePath = cursor.getString(7);
+            if(listPicturePath.equals("")) {
+                mGrvPicture.setVisibility(View.GONE);
+            }
+            else {
+                mGrvPicture.setVisibility(View.VISIBLE);
+                mArrayPicture.add(new Note(listPicturePath));
+                mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
+                mGrvPicture.setAdapter(mAdapterPicture);
+            }
+            if(cursor.getString(3).equals("")) {
                 mTxtAlarm.setVisibility(View.GONE);
                 mSpnDate.setVisibility(View.VISIBLE);
                 mSpnTime.setVisibility(View.VISIBLE);
+            }else {
+                mTxtAlarm.setVisibility(View.VISIBLE);
+                mSpnDate.setVisibility(View.GONE);
+                mSpnTime.setVisibility(View.GONE);
             }
         }
     }
 
     public void getNoteIdNext() {
-        Cursor cursor = mDatabase.getNoteId(mArrayNote.get(mPositionArray + 1).getIdNote());
-        while (cursor.moveToNext()) {
-            mEdtTitle.setText(cursor.getString(1));
-            mEdtNote.setText(cursor.getString(2));
-            byte[] imageByte = cursor.getBlob(7);
-            ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByte);
-            Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-            mImgNote.setImageBitmap(imageBitmap);
-            mLinearView.setBackgroundColor(cursor.getInt(5));
+        mPositionArray ++;
+        if(mPositionArray < mArrayNote.size()){
+            mIdNote = mArrayNote.get(mPositionArray).getIdNote();
+            getNoteId();
+        }else {
+            mPositionArray --;
+            getNoteId();
         }
     }
 
-    /*public void updateNote(){
+    public void getNoteidPrevious() {
+        mPositionArray --;
+        if(mPositionArray >= 0) {
+            mIdNote = mArrayNote.get(mPositionArray).getIdNote();
+            getNoteId();
+        }else {
+            mPositionArray ++;
+            getNoteId();
+        }
+    }
+
+    public void updateNote(){
         try {
             mDatabase.updateNote(mIdNote, new Note(
                     mEdtTitle.getText().toString(),
@@ -155,14 +173,13 @@ public class DetailNoteActivity extends CustomDialog {
                     mTime.toString(),
                     mTxtCurrentDate.getText().toString(),
                     mNewColor,
-                    ImageviewToBye(mImgNewImage)));
-            Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
+                    mPicturePath.toString()));
             startActivity(new Intent(DetailNoteActivity.this, MainActivity.class));
             finish();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Erro Update", Toast.LENGTH_LONG).show();
         }
-    }*/
+    }
 
     public void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -209,6 +226,7 @@ public class DetailNoteActivity extends CustomDialog {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.item_prvious:
+                    getNoteidPrevious();
                     break;
                 case R.id.item_delete:
                     dialogDeleteNote();
@@ -217,7 +235,7 @@ public class DetailNoteActivity extends CustomDialog {
                     shareNote();
                     break;
                 case R.id.item_next:
-                    //getNoteIdNext();
+                    getNoteIdNext();
                     break;
                 default:
                     break;
@@ -242,7 +260,7 @@ public class DetailNoteActivity extends CustomDialog {
                 gridDialog(DetailNoteActivity.this);
                 break;
             case R.id.item_deyail_accept:
-                //updateNote();
+                updateNote();
                 break;
             case R.id.item_detail_New:
                 startActivity(new Intent(DetailNoteActivity.this, NewNoteActivity.class));

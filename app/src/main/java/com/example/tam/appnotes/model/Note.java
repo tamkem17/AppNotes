@@ -11,23 +11,37 @@ import java.io.Serializable;
 
 public class Note implements Serializable{
     public int idNote;
-    public int idPicture;
     public String title;
     public String note;
     public String date;
     public String timer;
     public String dateCurrent;
     public int color;
+    public String picture;
 
-    public Note(int idNote, int idPicture, String title, String note, String date, String timer, String dateCurrent, int color) {
+    public Note(int idNote, String title, String note, String date, String timer, String dateCurrent, int color, String picture) {
         this.idNote = idNote;
-        this.idPicture = idPicture;
         this.title = title;
         this.note = note;
         this.date = date;
         this.timer = timer;
         this.dateCurrent = dateCurrent;
         this.color = color;
+        this.picture = picture;
+    }
+
+    public Note(String title, String note, String date, String timer, String dateCurrent, int color, String picture) {
+        this.title = title;
+        this.note = note;
+        this.date = date;
+        this.timer = timer;
+        this.dateCurrent = dateCurrent;
+        this.color = color;
+        this.picture = picture;
+    }
+
+    public Note(String picture) {
+        this.picture = picture;
     }
 
     public int getIdNote() {
@@ -36,14 +50,6 @@ public class Note implements Serializable{
 
     public void setIdNote(int idNote) {
         this.idNote = idNote;
-    }
-
-    public int getIdPicture() {
-        return idPicture;
-    }
-
-    public void setIdPicture(int idPicture) {
-        this.idPicture = idPicture;
     }
 
     public String getTitle() {

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Camera;
+import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.ui.DetailNoteActivity;
 import com.example.tam.appnotes.ui.NewNoteActivity;
 
@@ -47,15 +50,18 @@ public abstract class CustomDialog extends AppCompatActivity  {
     protected LinearLayout mLinearView;
     protected ListView mLvCamera;
     protected ArrayList<Camera> mArrayCamera;
-    protected ImageView mImgNewImage;
     protected TextView mTxtCurrentDate;
     protected java.util.Calendar mCalendar = java.util.Calendar.getInstance();
     protected String[] mDateName = {"Today", "Tomorrow", "NextWedesDay", "Other..."};
     protected String[] mTimeName = {"09:00", "13:00", "17:00", "20:00", "Other..."};
     protected ArrayAdapter<String> mAdapterDate, mAdapterTime;
     protected Spinner mSpnDate, mSpnTime;
-    protected String mDate, mTime;
+    protected String mDate = "", mTime = "", mPicturePath = "";
     protected int mNewColor;
+    protected GridView mGrvPicture;
+    protected CustomAdapterPicture mAdapterPicture = null;
+    protected ArrayList<Note> mArrayPicture;
+
 
 
 
@@ -153,6 +159,7 @@ public abstract class CustomDialog extends AppCompatActivity  {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mGrvPicture.setVisibility(View.VISIBLE);
             if (parent.getItemIdAtPosition(position) == 0) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
@@ -169,15 +176,36 @@ public abstract class CustomDialog extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uriImage;
-        mImgNewImage = (ImageView)findViewById(R.id.img_newImage);
-        if (resultCode == RESULT_OK & requestCode == PICK_IMAGE) {
-            uriImage = data.getData();
-            mImgNewImage.setImageURI(uriImage);
-        }
-        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            mImgNewImage.setImageBitmap(bitmap);
+        mGrvPicture = (GridView)findViewById(R.id.grv_listPicture);
+        mArrayPicture = new ArrayList<Note>();
+        if(data != null) {
+            if (resultCode == RESULT_OK & requestCode == PICK_IMAGE) {
+                Uri uriImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver()
+                        .query(uriImage, filePathColumn, null, null,
+                                null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                mPicturePath = cursor.getString(columnIndex);
+                cursor.close();
+                mArrayPicture.add(new Note(mPicturePath));
+                mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
+                mGrvPicture.setAdapter(mAdapterPicture);
+                return;
+            }
+            if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null) {
+                String[] projection = { MediaStore.Images.Media.DATA };
+                Cursor cursor = managedQuery(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        projection, null, null, null);
+                int column_index_data = cursor
+                        .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToLast();
+                mPicturePath = cursor.getString(column_index_data);
+                mArrayPicture.add(new Note(mPicturePath));
+                return;
+            }
         }
     }
 
@@ -257,13 +285,5 @@ public abstract class CustomDialog extends AppCompatActivity  {
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
-    }
-    public byte[] ImageviewToBye(ImageView image) {
-        BitmapDrawable drawable = (BitmapDrawable)image.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
     }
 }
