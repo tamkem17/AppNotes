@@ -27,8 +27,11 @@
             android:parentActivityName=".ui.MainActivity"></activity>
         <activity android:name=".ui.DetailNoteActivity"
             android:parentActivityName=".ui.MainActivity">
-
         </activity>
+
+        <receiver android:name=".presenter.AlarmReceiver" >
+        </receiver>
+
     </application>
 
 </manifest>

@@ -100,17 +100,15 @@ public class NewNoteActivity extends CustomDialog{
                 break;
             case R.id.item_accept:
                 insertNote();
-
-                //insertPicture();
                 startActivity(new Intent(NewNoteActivity.this, MainActivity.class));
                 finish();
-            break;
+                break;
             case R.id.item_grid:
                 gridDialog(NewNoteActivity.this);
-            break;
+                break;
             case R.id.item_camera:
                 cameraDialog(NewNoteActivity.this);
-            break;
+                break;
             default:
                 break;
     }

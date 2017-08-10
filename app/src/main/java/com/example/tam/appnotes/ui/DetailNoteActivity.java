@@ -29,6 +29,8 @@ import android.widget.Toast;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.CustomAdapterPicture;
@@ -46,7 +48,6 @@ public class DetailNoteActivity extends CustomDialog {
     private BottomNavigationView mBottomBar;
     private LinearLayout mLinearView;
     private ArrayList<Note> mArrayNote;
-    private int mIdNoteNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +114,8 @@ public class DetailNoteActivity extends CustomDialog {
     }
 
     public void getNoteId(){
-        mGrvPicture = (GridView)findViewById(R.id.grv_listPicture);
-        mArrayPicture = new ArrayList<Note>();
+        mGrvPicture = (GridView)findViewById(R.id.grv_picture);
+        //mArrayPicture = new ArrayList<Note>();
         Cursor cursor = mDatabase.getNoteId(mIdNote);
         while (cursor.moveToNext()) {
             mEdtTitle.setText(cursor.getString(1));
@@ -126,18 +127,19 @@ public class DetailNoteActivity extends CustomDialog {
             }
             else {
                 mGrvPicture.setVisibility(View.VISIBLE);
-                mArrayPicture.add(new Note(listPicturePath));
-                mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
+                //mArrayPicture.add(new Note(listPicturePath));
+               // mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
                 mGrvPicture.setAdapter(mAdapterPicture);
             }
             if(cursor.getString(3).equals("")) {
-                mTxtAlarm.setVisibility(View.GONE);
-                mSpnDate.setVisibility(View.VISIBLE);
-                mSpnTime.setVisibility(View.VISIBLE);
-            }else {
                 mTxtAlarm.setVisibility(View.VISIBLE);
                 mSpnDate.setVisibility(View.GONE);
                 mSpnTime.setVisibility(View.GONE);
+            }else {
+                mDateName[3] = cursor.getString(3);
+                mTxtAlarm.setVisibility(View.GONE);
+                mSpnDate.setVisibility(View.VISIBLE);
+                mSpnTime.setVisibility(View.VISIBLE);
             }
         }
     }

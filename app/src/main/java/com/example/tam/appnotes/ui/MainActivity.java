@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,16 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
-
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.AlarmReceiver;
 import com.example.tam.appnotes.presenter.CustomAdapterNote;
 import com.example.tam.appnotes.presenter.Database_Note;
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 
 public class MainActivity extends AppCompatActivity {
     private GridView mGrvNotes;
@@ -31,14 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private Database_Note mDatabase;
     private PendingIntent mPendingIntent;
     private AlarmManager mAlarmManager;
+    private java.util.Calendar mCalender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        mCalender = Calendar.getInstance();
+        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
         LoadListNote();
         mGrvNotes.setOnItemClickListener(new SeeDetailNote());
     }
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapterNote = new CustomAdapterNote(this, R.layout.list_item_note, mArrayNote);
         mGrvNotes.setAdapter(mAdapterNote);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

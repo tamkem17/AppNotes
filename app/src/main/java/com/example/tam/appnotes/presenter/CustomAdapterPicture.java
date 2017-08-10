@@ -3,20 +3,19 @@ package com.example.tam.appnotes.presenter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
+import android.os.AsyncTask;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.example.tam.appnotes.R;
-import com.example.tam.appnotes.model.Note;
 
-import java.io.ByteArrayOutputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +25,9 @@ import java.util.List;
 public class CustomAdapterPicture extends BaseAdapter {
     private Context mContext;
     private int mLayout;
-    private List<Note> mListPicture;
+    private List<String> mListPicture;
 
-    public CustomAdapterPicture(Context context, int layout, List<Note> pictureList) {
+    public CustomAdapterPicture(Context context, int layout, List<String> pictureList) {
         this.mContext = context;
         this.mLayout = layout;
         this.mListPicture = pictureList;
@@ -66,8 +65,7 @@ public class CustomAdapterPicture extends BaseAdapter {
         }else {
             holde = (ViewHolde)row.getTag();
         }
-        Note picture = mListPicture.get(i);
-        Bitmap bitmap = BitmapFactory.decodeFile(picture.picture);
+        Bitmap bitmap = BitmapFactory.decodeFile(mListPicture.get(i));
         holde.imgPicture.setImageBitmap(bitmap);
         notifyDataSetChanged();
         holde.btnDelete.setOnClickListener(new View.OnClickListener() {

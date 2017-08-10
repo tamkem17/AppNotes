@@ -1,8 +1,5 @@
 package com.example.tam.appnotes.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
