@@ -115,20 +115,25 @@ public class DetailNoteActivity extends CustomDialog {
 
     public void getNoteId(){
         mGrvPicture = (GridView)findViewById(R.id.grv_picture);
-        //mArrayPicture = new ArrayList<Note>();
         Cursor cursor = mDatabase.getNoteId(mIdNote);
         while (cursor.moveToNext()) {
             mEdtTitle.setText(cursor.getString(1));
             mEdtNote.setText(cursor.getString(2));
-            mLinearView.setBackgroundColor(cursor.getInt(6));
-            String listPicturePath = cursor.getString(7);
+            mLinearView.setBackgroundColor(cursor.getInt(5));
+            String listPicturePath = cursor.getString(6);
+            mArrayPicture = new ArrayList<String>();
+            String[] x =listPicturePath.split(", ");
+            for (int i = 0; i < x.length; i++){
+               String s = x[i].toString();
+                mArrayPicture.add(s.toString());
+            }
+            mArrayPicture.toString();
             if(listPicturePath.equals("")) {
                 mGrvPicture.setVisibility(View.GONE);
             }
             else {
                 mGrvPicture.setVisibility(View.VISIBLE);
-                //mArrayPicture.add(new Note(listPicturePath));
-               // mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
+                mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
                 mGrvPicture.setAdapter(mAdapterPicture);
             }
             if(cursor.getString(3).equals("")) {
@@ -167,15 +172,17 @@ public class DetailNoteActivity extends CustomDialog {
     }
 
     public void updateNote(){
+        String listPicturePath = mArrayPicture.toString();
+        String pictuePath = listPicturePath.substring(1, listPicturePath.length() - 1);
+        String alarm = mDate + " " + mTime;
         try {
             mDatabase.updateNote(mIdNote, new Note(
                     mEdtTitle.getText().toString(),
                     mEdtNote.getText().toString(),
-                    mDate.toString(),
-                    mTime.toString(),
+                    alarm.toString(),
                     mTxtCurrentDate.getText().toString(),
                     mNewColor,
-                    mPicturePath.toString()));
+                    pictuePath));
             startActivity(new Intent(DetailNoteActivity.this, MainActivity.class));
             finish();
         }catch (Exception e){

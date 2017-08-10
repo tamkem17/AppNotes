@@ -51,7 +51,7 @@ public abstract class CustomDialog extends AppCompatActivity  {
     protected int mNewColor;
     protected GridView mGrvPicture;
     protected CustomAdapterPicture mAdapterPicture;
-    protected ArrayList<String> mArrayPicture;
+    protected ArrayList<String> mArrayPicture = new ArrayList<>();
 
     public void gridDialog(Activity activity) {
         mDialogGrid = new Dialog(activity);
@@ -164,7 +164,7 @@ public abstract class CustomDialog extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mGrvPicture = (GridView)findViewById(R.id.grv_picture);
-        mArrayPicture = new ArrayList<String>();
+        mGrvPicture.setVisibility(View.VISIBLE);
             if (requestCode == PICK_IMAGE  && resultCode == RESULT_OK) {
                 Uri uriImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -243,6 +243,10 @@ public abstract class CustomDialog extends AppCompatActivity  {
                     mCalendar.add(Calendar.DAY_OF_YEAR, days);
                     mDate = sdfomat.format(mCalendar.getTime());
                     mCalendar = Calendar.getInstance();
+                }else {
+                    mCalendar.add(Calendar.DAY_OF_YEAR, 7);
+                    mDate = sdfomat.format(mCalendar.getTime());
+                    mCalendar = Calendar.getInstance();
                 }
             }
             if(parent.getSelectedItemPosition() == 3) {
@@ -260,9 +264,25 @@ public abstract class CustomDialog extends AppCompatActivity  {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (parent.getSelectedItemPosition() == 4) {
-                timePickerDialog();
-            }
+           switch (parent.getSelectedItemPosition()){
+               case 0:
+                   mTime = mTimeName[0];
+                   break;
+               case 1:
+                   mTime = mTimeName[1];
+                   break;
+               case 2:
+                   mTime = mTimeName[2];
+                   break;
+               case 3:
+                   mTime = mTimeName[3];
+                   break;
+               case 4:
+                   timePickerDialog();
+                   break;
+               default:
+                   break;
+           }
         }
 
         @Override

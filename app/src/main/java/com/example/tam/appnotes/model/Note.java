@@ -10,28 +10,25 @@ public class Note implements Serializable{
     public int idNote;
     public String title;
     public String note;
-    public String date;
-    public String timer;
+    public String alarm;
     public String dateCurrent;
     public int color;
     public String picture;
 
-    public Note(int idNote, String title, String note, String date, String timer, String dateCurrent, int color, String picture) {
+    public Note(int idNote, String title, String note, String alarm, String dateCurrent, int color, String picture) {
         this.idNote = idNote;
         this.title = title;
         this.note = note;
-        this.date = date;
-        this.timer = timer;
+        this.alarm = alarm;
         this.dateCurrent = dateCurrent;
         this.color = color;
         this.picture = picture;
     }
 
-    public Note(String title, String note, String date, String timer, String dateCurrent, int color, String picture) {
+    public Note(String title, String note, String alarm, String dateCurrent, int color, String picture) {
         this.title = title;
         this.note = note;
-        this.date = date;
-        this.timer = timer;
+        this.alarm = alarm;
         this.dateCurrent = dateCurrent;
         this.color = color;
         this.picture = picture;
@@ -65,22 +62,6 @@ public class Note implements Serializable{
         this.note = note;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTimer() {
-        return timer;
-    }
-
-    public void setTimer(String timer) {
-        this.timer = timer;
-    }
-
     public String getDateCurrent() {
         return dateCurrent;
     }
@@ -95,5 +76,13 @@ public class Note implements Serializable{
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public String getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(String alarm) {
+        this.alarm = alarm;
     }
 }

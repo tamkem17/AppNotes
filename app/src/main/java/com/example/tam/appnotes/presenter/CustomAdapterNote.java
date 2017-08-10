@@ -80,7 +80,7 @@ public class CustomAdapterNote extends BaseAdapter {
         }else {
             holde.linearLayout.setBackgroundColor(note.color);
         }
-        if(note.date.equals("")) {
+        if(note.alarm.equals("")) {
             holde.imageNote.setVisibility(View.GONE);
         }else  {
             holde.imageNote.setVisibility(View.VISIBLE);

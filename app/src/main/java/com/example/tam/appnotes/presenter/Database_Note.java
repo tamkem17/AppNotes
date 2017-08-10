@@ -19,8 +19,7 @@ public class Database_Note extends SQLiteOpenHelper {
     static final String COLUMN_ID = "id_note";
     static final String COLUMN_TITLE = "title";
     static final String COLUMN_NOTE = "note";
-    static final String COLUMN_DATE = "date";
-    static final String COLUMN_TIME = "time";
+    static final String COLUMN_ALARM = "date";
     static final String COLUMN_TIME_CURRENT = "time_current";
     static final String COLUMN_COLOR = "color";
     static final String COLUMN_PICTURE = "picture";
@@ -30,8 +29,7 @@ public class Database_Note extends SQLiteOpenHelper {
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_TITLE + " TEXT,"
             + COLUMN_NOTE + " TEXT,"
-            + COLUMN_DATE + " TEXT,"
-            + COLUMN_TIME + " TEXT,"
+            + COLUMN_ALARM + " TEXT,"
             + COLUMN_TIME_CURRENT + " TEXT,"
             + COLUMN_COLOR + " INT,"
             + COLUMN_PICTURE + " TEXT"
@@ -58,8 +56,7 @@ public class Database_Note extends SQLiteOpenHelper {
        values.put(COLUMN_TITLE, note.title);
        values.put(COLUMN_NOTE, note.note);
        values.put(COLUMN_TIME_CURRENT, note.dateCurrent);
-       values.put(COLUMN_DATE, note.date);
-       values.put(COLUMN_TIME, note.timer);
+       values.put(COLUMN_ALARM, note.alarm);
        values.put(COLUMN_COLOR, note.color);
        values.put(COLUMN_PICTURE, note.picture);
        database.insert(NOTES_TABLE, null, values);
@@ -90,8 +87,7 @@ public class Database_Note extends SQLiteOpenHelper {
         values.put(COLUMN_TITLE, note.title);
         values.put(COLUMN_NOTE, note.note);
         values.put(COLUMN_TIME_CURRENT, note.dateCurrent);
-        values.put(COLUMN_DATE, note.date);
-        values.put(COLUMN_TIME, note.timer);
+        values.put(COLUMN_ALARM, note.alarm);
         values.put(COLUMN_COLOR, note.color);
         values.put(COLUMN_PICTURE, note.picture);
         database.update(NOTES_TABLE, values, COLUMN_ID + " = " + id, null);

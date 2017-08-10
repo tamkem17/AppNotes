@@ -73,16 +73,17 @@ public class NewNoteActivity extends CustomDialog{
     }
 
     public void insertNote() {
+        String listPicturePath = mArrayPicture.toString();
+        String pictuePath = listPicturePath.substring(1, listPicturePath.length() - 1);
+        String alarm = mDate + " " + mTime;
         mDatabase.inSertNote(new Note(
                 mEdtTitle.getText().toString(),
                 mEdtNote.getText().toString(),
-                mDate.toString(),
-                mTime.toString(),
+                alarm.toString(),
                 mTxtCurrentDate.getText().toString(),
                 mNewColor,
-                mPicturePath.toString()
+                pictuePath
         ));
-
     }
 
     @Override

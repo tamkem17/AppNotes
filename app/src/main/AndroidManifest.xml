@@ -31,7 +31,7 @@
 
         <receiver android:name=".presenter.AlarmReceiver" >
         </receiver>
-
+        <service android:name=".presenter.AlarmBell"></service>
     </application>
 
 </manifest>

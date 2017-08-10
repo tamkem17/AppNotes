@@ -13,7 +13,8 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/grv_picture"
-       android:numColumns="3"></GridView>
+       android:numColumns="3"
+       android:visibility="gone"></GridView>
 
     <TextView
         android:layout_width="wrap_content"
