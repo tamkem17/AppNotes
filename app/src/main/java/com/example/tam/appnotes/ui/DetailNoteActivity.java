@@ -22,6 +22,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,7 @@ public class DetailNoteActivity extends CustomDialog {
     private ImageView mImgNote;
     private Database_Note mDatabase;
     private BottomNavigationView mBottomBar;
-    private LinearLayout mLinearView;
+    private ScrollView mScoll;
     private ArrayList<Note> mArrayNote;
 
     @Override
@@ -63,7 +64,7 @@ public class DetailNoteActivity extends CustomDialog {
         mImgNote = (ImageView)findViewById(R.id.img_picture);
         mSpnDate = (Spinner) findViewById(R.id.spn_Date);
         mSpnTime = (Spinner) findViewById(R.id.spn_Time);
-        mLinearView = (LinearLayout) findViewById(R.id.linearView);
+        mScoll = (ScrollView) findViewById(R.id.scView);
         mTxtAlarm.setOnClickListener(new alarmClick());
         mImbtnCancel.setOnClickListener(new canCelClick());
         mSpnDate.setOnItemSelectedListener(new ItemSelectedDate());
@@ -119,13 +120,13 @@ public class DetailNoteActivity extends CustomDialog {
         while (cursor.moveToNext()) {
             mEdtTitle.setText(cursor.getString(1));
             mEdtNote.setText(cursor.getString(2));
-            mLinearView.setBackgroundColor(cursor.getInt(5));
+            mScoll.setBackgroundColor(cursor.getInt(5));
             String listPicturePath = cursor.getString(6);
             mArrayPicture = new ArrayList<String>();
             String[] x =listPicturePath.split(", ");
             for (int i = 0; i < x.length; i++){
                String s = x[i].toString();
-                mArrayPicture.add(s.toString());
+                mArrayPicture.add(s);
             }
             mArrayPicture.toString();
             if(listPicturePath.equals("")) {
@@ -136,7 +137,7 @@ public class DetailNoteActivity extends CustomDialog {
                 mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
                 mGrvPicture.setAdapter(mAdapterPicture);
             }
-            if(cursor.getString(3).equals("")) {
+            if(cursor.getString(3).equals(" ")) {
                 mTxtAlarm.setVisibility(View.VISIBLE);
                 mSpnDate.setVisibility(View.GONE);
                 mSpnTime.setVisibility(View.GONE);

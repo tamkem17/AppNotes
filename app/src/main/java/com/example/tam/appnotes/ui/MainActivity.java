@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
+
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.AlarmReceiver;
@@ -88,16 +90,16 @@ public class MainActivity extends AppCompatActivity {
                 for (int i =0; i< mAlarmTime.size(); i++) {
                     date = sdf.parse(mAlarmTime.get(i));
                 }
-                mCalender.setTimeInMillis(System.currentTimeMillis());
+                /*mCalender.setTimeInMillis(System.currentTimeMillis());
                 mCalender.set(Calendar.HOUR_OF_DAY, date.getHours());
                 mCalender.set(Calendar.MINUTE, date.getMinutes());
                 mCalender.set(Calendar.DAY_OF_MONTH, date.getDate());
                 mCalender.set(Calendar.MONTH, date.getMonth());
-                mCalender.set(Calendar.YEAR, date.getYear());
+                mCalender.set(Calendar.YEAR, date.getYear());*/
                 mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
                 Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                mPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(),1000, mPendingIntent);
+                mPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
                 dialogAlarm();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -115,14 +117,12 @@ public class MainActivity extends AppCompatActivity {
                 mAlarmManager.cancel(mPendingIntent);
             }
         });
-
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

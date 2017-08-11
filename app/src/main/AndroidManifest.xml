@@ -28,7 +28,15 @@
         <activity android:name=".ui.DetailNoteActivity"
             android:parentActivityName=".ui.MainActivity">
         </activity>
-
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.tam.appnotes.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
         <receiver android:name=".presenter.AlarmReceiver" >
         </receiver>
         <service android:name=".presenter.AlarmBell"></service>

@@ -1,77 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tam.appnotes.ui.NewNoteActivity"
+    android:id="@+id/scView"
+    tools:context="com.example.tam.appnotes.ui.NewNoteActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="10dp"
-    android:id="@+id/linearView">
-
-   <GridView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/grv_picture"
-       android:numColumns="3"
-       android:visibility="gone"></GridView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_CurrentDate"
-        android:layout_gravity="right"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:id="@+id/edt_title"
-        android:textSize="20sp"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Note"
-        android:layout_marginTop="10dp"
-        android:id="@+id/edt_note"
-        android:textSize="20sp"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-        <ImageView
-            android:layout_width="wrap_content"
+    >
+        <GridView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_alarms_select"/>
+            android:id="@+id/grv_picture"
+            android:numColumns="3"
+            android:visibility="gone"></GridView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alarm"
-            android:textSize="18sp"
-            android:id="@+id/txt_Alarm"
-            android:layout_marginTop="5dp"/>
-        <Spinner
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_CurrentDate"
+            android:layout_gravity="right"
+            />
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spn_Date"
-            android:layout_marginLeft="25dp"
-            android:visibility="gone"></Spinner>
-        <Spinner
-            android:layout_width="wrap_content"
+            android:hint="Title"
+            android:id="@+id/edt_title"
+            android:textSize="20sp"/>
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spn_Time"
-            android:layout_marginLeft="25dp"
-            android:visibility="gone"></Spinner>
-
-        <ImageButton
-            android:layout_width="wrap_content"
+            android:hint="Note"
+            android:layout_marginTop="10dp"
+            android:id="@+id/edt_note"
+            android:textSize="20sp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_action_cancel"
-            android:visibility="gone"
-            android:id="@+id/imbt_Cancel"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_alarms_select"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alarm"
+                android:textSize="18sp"
+                android:id="@+id/txt_Alarm"
+                android:layout_marginTop="5dp"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spn_Date"
+                android:layout_marginLeft="25dp"
+                android:visibility="gone"></Spinner>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spn_Time"
+                android:layout_marginLeft="25dp"
+                android:visibility="gone"></Spinner>
 
-
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_action_cancel"
+                android:visibility="gone"
+                android:id="@+id/imbt_Cancel"/>
+        </LinearLayout>
 </LinearLayout>
+    </ScrollView>
