@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         LoadListNote();
         alarmService();
         mGrvNotes.setOnItemClickListener(new SeeDetailNote());
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     cursorNote.getInt(5),
                     cursorNote.getString(6)));
             mAlarmTime.add(cursorNote.getString(3));
-            mAlarmTime.toString();
         }
         mAdapterNote = new CustomAdapterNote(this, R.layout.list_item_note, mArrayNote);
         mGrvNotes.setAdapter(mAdapterNote);
@@ -83,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void alarmService() {
         mCalender = Calendar.getInstance();
+        int nowHours = mCalender.getTime().getHours();
+        int nowMinute = mCalender.getTime().getMinutes();
+        int nowDay = mCalender.getTime().getDate();
+        int nowMounth = mCalender.getTime().getMonth();
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = null;
         if(mAlarmManager != null){
@@ -90,21 +97,24 @@ public class MainActivity extends AppCompatActivity {
                 for (int i =0; i< mAlarmTime.size(); i++) {
                     date = sdf.parse(mAlarmTime.get(i));
                 }
-                /*mCalender.setTimeInMillis(System.currentTimeMillis());
-                mCalender.set(Calendar.HOUR_OF_DAY, date.getHours());
-                mCalender.set(Calendar.MINUTE, date.getMinutes());
-                mCalender.set(Calendar.DAY_OF_MONTH, date.getDate());
-                mCalender.set(Calendar.MONTH, date.getMonth());
-                mCalender.set(Calendar.YEAR, date.getYear());*/
-                mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                mPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-                mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
-                dialogAlarm();
+               if(nowMounth == date.getMonth() && nowDay == date.getDate()
+                       && nowMinute == date.getMinutes() && nowHours == date.getHours()) {
+                   mCalender.setTimeInMillis(System.currentTimeMillis());
+                   mCalender.set(Calendar.HOUR_OF_DAY, date.getHours());
+                   mCalender.set(Calendar.MINUTE, date.getMinutes());
+                   mCalender.set(Calendar.DAY_OF_MONTH, date.getDate());
+                   mCalender.set(Calendar.MONTH, date.getMonth());
+                   mCalender.set(Calendar.SECOND, 00);
+                   mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
+                   dialogAlarm();
+               }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }else {
+            mAlarmManager.cancel(mPendingIntent);
         }
+
     }
 
     public void dialogAlarm() {
@@ -137,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.item_new) {
             startActivity(new Intent(MainActivity.this, NewNoteActivity.class));
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

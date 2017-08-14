@@ -1,26 +1,23 @@
 package com.example.tam.appnotes.ui;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
-import com.example.tam.appnotes.presenter.CustomDialog;
+import com.example.tam.appnotes.presenter.CommonActivity;
 import com.example.tam.appnotes.presenter.Database_Note;
 
-public class NewNoteActivity extends CustomDialog{
+public class NewNoteActivity extends CommonActivity {
     private TextView mTxtAlarm;
     private EditText mEdtTitle, mEdtNote;
     private Spinner mSpnDate, mSpnTime;

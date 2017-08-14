@@ -3,9 +3,6 @@ package com.example.tam.appnotes.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -16,29 +13,25 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.CustomAdapterPicture;
-import com.example.tam.appnotes.presenter.CustomDialog;
+import com.example.tam.appnotes.presenter.CommonActivity;
 import com.example.tam.appnotes.presenter.Database_Note;
 
-public class DetailNoteActivity extends CustomDialog {
+public class DetailNoteActivity extends CommonActivity {
     private TextView mTxtAlarm;
     private Spinner mSpnDate, mSpnTime;
     private ImageButton mImbtnCancel;

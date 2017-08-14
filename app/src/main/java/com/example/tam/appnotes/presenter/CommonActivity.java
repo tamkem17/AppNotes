@@ -56,7 +56,7 @@ import java.util.Locale;
  * Created by tam on 8/7/2017.
  */
 
-public abstract class CustomDialog extends AppCompatActivity  {
+public abstract class CommonActivity extends AppCompatActivity  {
     private static final int PICK_IMAGE = 100;
     private static final int REQUEST_CODE_CAMERA = 1;
     private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
