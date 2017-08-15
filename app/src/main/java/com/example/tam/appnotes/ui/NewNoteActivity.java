@@ -72,7 +72,7 @@ public class NewNoteActivity extends CommonActivity {
     public void insertNote() {
         String listPicturePath = mArrayPicture.toString();
         String pictuePath = listPicturePath.substring(1, listPicturePath.length() - 1);
-        String alarm = mDate + " " + mTime;
+        String alarm = mDate + mTime;
         mDatabase.inSertNote(new Note(
                 mEdtTitle.getText().toString(),
                 mEdtNote.getText().toString(),

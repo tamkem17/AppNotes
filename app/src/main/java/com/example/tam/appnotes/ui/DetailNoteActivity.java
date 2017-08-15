@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
@@ -42,6 +43,7 @@ public class DetailNoteActivity extends CommonActivity {
     private BottomNavigationView mBottomBar;
     private ScrollView mScoll;
     private ArrayList<Note> mArrayNote;
+    private String mUpdateTime = "", mUpdateDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,12 +132,19 @@ public class DetailNoteActivity extends CommonActivity {
                 mAdapterPicture = new CustomAdapterPicture(this, R.layout.list_item_picture, mArrayPicture);
                 mGrvPicture.setAdapter(mAdapterPicture);
             }
-            if(cursor.getString(3).equals(" ")) {
+            if(cursor.getString(3).equals("")) {
                 mTxtAlarm.setVisibility(View.VISIBLE);
                 mSpnDate.setVisibility(View.GONE);
                 mSpnTime.setVisibility(View.GONE);
             }else {
-                mDateName[3] = cursor.getString(3);
+                mPositionTime = mTimeName.length - 1;
+                mPositionDate = mDateName.length - 1;
+                mUpdateDate = cursor.getString(3).substring(0, 10);
+                mUpdateTime = cursor.getString(3).substring(10, 15);
+                mDateName[3] = mUpdateDate;
+                mTimeName[4] = mUpdateTime;
+                mSpnDate.setSelection(mPositionDate);
+                mSpnTime.setSelection(mPositionTime);
                 mTxtAlarm.setVisibility(View.GONE);
                 mSpnDate.setVisibility(View.VISIBLE);
                 mSpnTime.setVisibility(View.VISIBLE);
@@ -168,12 +177,23 @@ public class DetailNoteActivity extends CommonActivity {
     public void updateNote(){
         String listPicturePath = mArrayPicture.toString();
         String pictuePath = listPicturePath.substring(1, listPicturePath.length() - 1);
-        String alarm = mDate + " " + mTime;
+        String alarm;
+        if(mDate == ""){
+            alarm = mUpdateDate + mTime;
+        }
+       else if(mTime == ""){
+            alarm = mDate + mUpdateTime;
+        }else if(mDate == "" && mTime == ""){
+            alarm = mUpdateDate + mUpdateTime;
+        }
+        else {
+            alarm = mDate + mTime;
+        }
         try {
             mDatabase.updateNote(mIdNote, new Note(
                     mEdtTitle.getText().toString(),
                     mEdtNote.getText().toString(),
-                    alarm.toString(),
+                    alarm,
                     mTxtCurrentDate.getText().toString(),
                     mNewColor,
                     pictuePath));
@@ -223,6 +243,8 @@ public class DetailNoteActivity extends CommonActivity {
         }
     }
 
+
+
     public class lectesedItemBottom implements BottomNavigationView.OnNavigationItemSelectedListener{
 
         @Override
@@ -264,6 +286,7 @@ public class DetailNoteActivity extends CommonActivity {
                 break;
             case R.id.item_deyail_accept:
                 updateNote();
+                finish();
                 break;
             case R.id.item_detail_New:
                 startActivity(new Intent(DetailNoteActivity.this, NewNoteActivity.class));

@@ -72,6 +72,7 @@ public abstract class CommonActivity extends AppCompatActivity  {
     protected Spinner mSpnDate, mSpnTime;
     protected String mDate = "", mTime = "", mPicturePath = "";
     protected int mNewColor;
+    protected int mPositionDate, mPositionTime;
     protected GridView mGrvPicture;
     protected CustomAdapterPicture mAdapterPicture;
     protected ArrayList<String> mArrayPicture = new ArrayList<>();
@@ -102,7 +103,7 @@ public abstract class CommonActivity extends AppCompatActivity  {
         CustomAdapterCamere adapterCamera = new CustomAdapterCamere(activity, R.layout.list_item_camera, mArrayCamera);
         mLvCamera.setAdapter(adapterCamera);
         mDialogCamera.show();
-       mLvCamera.setOnItemClickListener(new choosePicture());
+        mLvCamera.setOnItemClickListener(new choosePicture());
     }
 
     public void getCurrentDate() {
@@ -139,7 +140,11 @@ public abstract class CommonActivity extends AppCompatActivity  {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        mDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        SimpleDateFormat sdf = null;
+                        String strDateFormat = "dd/MM/yyyy";
+                        sdf = new SimpleDateFormat(strDateFormat);
+                        mCalendar.set(year, month, dayOfMonth);
+                        mDate = sdf.format(mCalendar.getTime());
                         mDateName[3] = mDate;
                         mAdapterDate.notifyDataSetChanged();
                     }
@@ -155,14 +160,19 @@ public abstract class CommonActivity extends AppCompatActivity  {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mTime = hourOfDay + ":" + minute;
+                        mCalendar.set(mCalendar.HOUR_OF_DAY, hourOfDay);
+                        mCalendar.set(mCalendar.MINUTE, minute);
+                        SimpleDateFormat sdf = null;
+                        String strDateFormat = "HH:mm";
+                        sdf = new SimpleDateFormat(strDateFormat);
+                        mTime = sdf.format(mCalendar.getTime());
                         mTimeName[4] = mTime;
                         mAdapterTime.notifyDataSetChanged();
                     }
                 },
                 mCalendar.get(Calendar.HOUR_OF_DAY),
                 mCalendar.get(Calendar.MINUTE), true);
-        timePicker.show();
+                timePicker.show();
     }
 
     public class choosePicture implements AdapterView.OnItemClickListener {
@@ -336,6 +346,7 @@ public abstract class CommonActivity extends AppCompatActivity  {
         }
     }
 
+
     public class ItemSelectedDate implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -344,14 +355,16 @@ public abstract class CommonActivity extends AppCompatActivity  {
             sdfomat = new SimpleDateFormat(strDateFormat);
             if(parent.getSelectedItemPosition() == 0) {
                 mDate = mTxtCurrentDate.getText().toString().substring(0, 10);
+                mPositionDate = position;
             }
-            /*Ngay tiếp theo*/
+            /*next date*/
             if(parent.getSelectedItemPosition() == 1) {
                 mCalendar.add(Calendar.DAY_OF_YEAR, 1);
                 mDate = sdfomat.format(mCalendar.getTime());
                 mCalendar = Calendar.getInstance();
+                mPositionDate = position;
             }
-            /*thứ 5 tuần tiếp theo */
+            /*thurday next week */
             if(parent.getSelectedItemPosition() == 2) {
                 int weekday = mCalendar.get(Calendar.DAY_OF_WEEK);
                 if (weekday!=Calendar.THURSDAY){
@@ -364,9 +377,12 @@ public abstract class CommonActivity extends AppCompatActivity  {
                     mDate = sdfomat.format(mCalendar.getTime());
                     mCalendar = Calendar.getInstance();
                 }
+                mPositionDate = position;
             }
             if(parent.getSelectedItemPosition() == 3) {
-                datePickerDialog();
+                if(mPositionDate != position) {
+                    datePickerDialog();
+                }
             }
         }
 
@@ -383,18 +399,24 @@ public abstract class CommonActivity extends AppCompatActivity  {
            switch (parent.getSelectedItemPosition()){
                case 0:
                    mTime = mTimeName[0];
+                   mPositionTime = position;
                    break;
                case 1:
                    mTime = mTimeName[1];
+                   mPositionTime = position;
                    break;
                case 2:
                    mTime = mTimeName[2];
+                   mPositionTime = position;
                    break;
                case 3:
+                   mPositionTime = position;
                    mTime = mTimeName[3];
                    break;
                case 4:
-                   timePickerDialog();
+                   if(mPositionTime != position) {
+                       timePickerDialog();
+                   }
                    break;
                default:
                    break;

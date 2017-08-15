@@ -14,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
-
 import com.example.tam.appnotes.R;
 import com.example.tam.appnotes.model.Note;
 import com.example.tam.appnotes.presenter.AlarmReceiver;
@@ -51,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         mGrvNotes.setOnItemClickListener(new SeeDetailNote());
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAlarmTime != null){
+            alarmService();
+        }
+    }
+
     public class SeeDetailNote implements AdapterView.OnItemClickListener{
 
         @Override
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("position", i);
             intent.putExtra("arrayNote", mArrayNote);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -84,58 +91,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void alarmService() {
-        mCalender = Calendar.getInstance();
-        int nowHours = mCalender.getTime().getHours();
-        int nowMinute = mCalender.getTime().getMinutes();
-        int nowDay = mCalender.getTime().getDate();
-        int nowMounth = mCalender.getTime().getMonth();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date date = null;
-        if(mAlarmManager != null){
+        if(mAlarmTime != null){
+            mCalender = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyHH:mm");
+            Date date = null;
             try {
                 for (int i =0; i< mAlarmTime.size(); i++) {
                     date = sdf.parse(mAlarmTime.get(i));
                 }
-               if(nowMounth == date.getMonth() && nowDay == date.getDate()
-                       && nowMinute == date.getMinutes() && nowHours == date.getHours()) {
-                   mCalender.setTimeInMillis(System.currentTimeMillis());
-                   mCalender.set(Calendar.HOUR_OF_DAY, date.getHours());
-                   mCalender.set(Calendar.MINUTE, date.getMinutes());
-                   mCalender.set(Calendar.DAY_OF_MONTH, date.getDate());
-                   mCalender.set(Calendar.MONTH, date.getMonth());
-                   mCalender.set(Calendar.SECOND, 00);
-                   mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
-                   dialogAlarm();
-               }
+                if (date != null) {
+                    mCalender.setTimeInMillis(System.currentTimeMillis());
+                    mCalender.set(Calendar.HOUR_OF_DAY, date.getHours());
+                    mCalender.set(Calendar.MINUTE, date.getMinutes());
+                    mCalender.set(Calendar.DAY_OF_MONTH, date.getDate());
+                    mCalender.set(Calendar.MONTH, date.getMonth());
+                    mCalender.set(Calendar.SECOND, 00);
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalender.getTimeInMillis(), mPendingIntent);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }else {
-            mAlarmManager.cancel(mPendingIntent);
         }
-
     }
-
-    public void dialogAlarm() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Confirm Delete");
-        alertDialogBuilder.setMessage("Are you sure you want to delete this");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                mAlarmManager.cancel(mPendingIntent);
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

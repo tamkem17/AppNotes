@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    android:background="@color/colorGrey">
+    android:background="@color/colorOrange">
 <ImageButton
     android:layout_width="wrap_content"
     android:layout_height="50dp"
@@ -20,7 +20,7 @@
         android:id="@+id/imgbtn_Yellow"
         android:layout_marginRight="10dp"
         android:background="@color/colorYellow"
-        android:tag="#ffff90"/>
+        android:tag="#fce95d"/>
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -28,12 +28,12 @@
         android:id="@+id/imgbtn_green"
         android:layout_marginRight="10dp"
         android:background="@color/colorGreen"
-        android:tag="#80fc80"/>
+        android:tag="#8edc3c"/>
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_weight="1"
         android:id="@+id/imgbtn_blue"
         android:background="@color/colorBlue"
-        android:tag="#7abcfa"/>
+        android:tag="#649fd6"/>
 </LinearLayout>

@@ -1,5 +1,4 @@
 package com.example.tam.appnotes.presenter;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,15 +14,14 @@ import android.widget.Toast;
 public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent myIntent = new Intent(context, AlarmBell.class);
-        context.startService(myIntent);
-        /*Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null)
         {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
         Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-        ringtone.play();*/
-        Toast.makeText(context, "Wake up Wake up", Toast.LENGTH_LONG).show();
+        ringtone.play();
+        Toast.makeText(context, "wake up! wake up!...", Toast.LENGTH_LONG).show();
     }
+
 }
